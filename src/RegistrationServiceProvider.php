@@ -30,6 +30,8 @@ class RegistrationServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        $this->loadViewsFrom(__DIR__.'/src/views', 'registration');
+
         Event::listen('Illuminate\\Auth\\Events\\Registered', function ($event) {
             $user = $event->user;
             $date = Carbon::now()->addMinutes(15);
