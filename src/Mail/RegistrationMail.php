@@ -31,7 +31,7 @@ class RegistrationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('registration::registration-mail', [
+        return $this->view()->file('../views/registration-mail.blade.php', [
             'userName' => $this->user->name
         ])->
         from('v@086.kz', 'Admin')->
