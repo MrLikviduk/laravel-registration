@@ -30,7 +30,7 @@ class RegistrationServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        $this->loadViewsFrom('views', 'registration');
+        $this->loadViewsFrom(__DIR__.'/views', 'registration');
 
         Event::listen('Illuminate\\Auth\\Events\\Registered', function ($event) {
             $user = $event->user;
