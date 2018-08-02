@@ -8,7 +8,9 @@
             "email": "v@086.kz"
         }
     ],
-    "require": {},
+    "require": {
+        "mrlikviduk/registration": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "MrLikviduk\\Registration\\": "/src"
