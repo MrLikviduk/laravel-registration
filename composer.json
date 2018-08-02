@@ -1,0 +1,24 @@
+{
+    "name": "mrlikviduk/registration",
+    "description": "This is my package to do a test task",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MrLikviduk",
+            "email": "v@086.kz"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MrLikviduk\\Registration\\": "/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MrLikviduk\\Registration\\RegistrationServiceProvider"
+            ]
+        }
+    }
+}
