@@ -36,7 +36,7 @@ class RegistrationServiceProvider extends ServiceProvider
             $user = $event->user;
             $date = Carbon::now();
             Queue::later($date, new SendRegistrationMail($user, 'user'));
-            Queue::later(new SendRegistrationMail($user, 'admin'), $date);
+            Queue::later($date, new SendRegistrationMail($user, 'admin'));
         });
     }
 }
