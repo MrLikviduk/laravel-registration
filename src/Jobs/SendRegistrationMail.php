@@ -38,6 +38,6 @@ class SendRegistrationMail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user)->send(new RegistrationMail($this->user, $this->role));
+        Mail::send(new RegistrationMail($this->user, $this->role));
     }
 }
