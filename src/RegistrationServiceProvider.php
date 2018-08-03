@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Queue;
+use MrLikviduk\Registration\Jobs\SendPlannedMail;
 use MrLikviduk\Registration\Jobs\SendRegistrationMail;
 
 class RegistrationServiceProvider extends ServiceProvider
@@ -34,9 +35,12 @@ class RegistrationServiceProvider extends ServiceProvider
 
         Event::listen('Illuminate\\Auth\\Events\\Registered', function ($event) {
             $user = $event->user;
-            $date = Carbon::now();
+            $date = Carbon::now()->addMinutes(15);
             Queue::later($date, new SendRegistrationMail($user, 'user'));
             Queue::later($date, new SendRegistrationMail($user, 'admin'));
+            for ($i = 0; $i < 3; $i++) {
+                Queue::later(Carbon::now()->addMinutes(30)->addDays($i), new SendPlannedMail($user, $i + 1));
+            }
         });
     }
 }
