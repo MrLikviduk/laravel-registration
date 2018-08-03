@@ -34,9 +34,9 @@ class RegistrationServiceProvider extends ServiceProvider
 
         Event::listen('Illuminate\\Auth\\Events\\Registered', function ($event) {
             $user = $event->user;
-            $date = Carbon::now()->addMinutes(15);
+            $date = Carbon::now();
             Queue::later($date, new SendRegistrationMail($user, 'user'));
-            Queue::later($date)
+            Queue::later(new SendRegistrationMail($user, 'admin'), $date);
         });
     }
 }
