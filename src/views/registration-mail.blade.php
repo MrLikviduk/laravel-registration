@@ -1,8 +1,8 @@
 <html>
 <body>
-    <h3>Welcome, {{ $userName }}</h3>
+    <h3>{{ $header }}</h3>
     <p>
-        You have successfully finished the registration!
+        {{ $body }}
     </p>
 </body>
 </html>

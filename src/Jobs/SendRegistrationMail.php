@@ -18,13 +18,16 @@ class SendRegistrationMail implements ShouldQueue
 
     protected $user;
 
+    protected $role; // Для того, чтобы узнать, кому отправлять письмо
+
     /**
      * Create a new job instance.
      *
      * @param User $user
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $role)
     {
+        $this->role = $role;
         $this->user = $user;
     }
 
@@ -35,6 +38,6 @@ class SendRegistrationMail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user)->send(new RegistrationMail($this->user));
+        Mail::to($this->user)->send(new RegistrationMail($this->user, $this->role));
     }
 }
