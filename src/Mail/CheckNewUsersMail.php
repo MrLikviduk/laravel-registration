@@ -36,6 +36,7 @@ class CheckNewUsersMailMail extends Mailable
     {
         return $this->view('registration::check-new-users-mail', [
             'users_count' => $this->users_count,
+            'periodicity' => $this->periodicity
         ])->
         to(Config::get('mail.from.address'), Config::get('mail.from.name'));
     }
