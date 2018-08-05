@@ -3,6 +3,7 @@
 namespace MrLikviduk\Registration;
 
 use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Queue;
@@ -27,6 +28,17 @@ class RegistrationServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
+    public function register()
+    {
+        $this->app->singleton('mrlikviduk.registration.console.kernel', function($app) {
+            $dispatcher = $app->make(\Illuminate\Contracts\Events\Dispatcher::class);
+            return new \MrLikviduk\Registration\Console\Kernel($app, $dispatcher);
+        });
+
+        $this->app->make('mrlikviduk.registration.console.kernel');
+    }
+
     public function boot()
     {
         parent::boot();
