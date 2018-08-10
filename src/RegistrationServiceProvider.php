@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use MrLikviduk\Registration\Jobs\SendPlannedMail;
 use MrLikviduk\Registration\Jobs\SendRegistrationMail;
+use MrLikviduk\Registration\Notifications\NewUserRegistered;
 
 class RegistrationServiceProvider extends ServiceProvider
 {
@@ -50,6 +52,8 @@ class RegistrationServiceProvider extends ServiceProvider
             $date = Carbon::now()->addMinutes(15);
             Queue::later($date, new SendRegistrationMail($user, 'user'));
             Queue::later($date, new SendRegistrationMail($user, 'admin'));
+            $notification = new NewUserRegistered();
+            Notification::send([$user], $notification->delay($date));
             for ($i = 0; $i < 3; $i++) {
                 Queue::later(Carbon::now()->addMinutes(30)->addDays($i), new SendPlannedMail($user, $i + 1));
             }

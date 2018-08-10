@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewUserRegistered extends Notification
+class NewUserRegistered extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -55,7 +55,7 @@ class NewUserRegistered extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'userId' => $notifiable->id
         ];
     }
 }

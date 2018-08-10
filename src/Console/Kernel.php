@@ -6,7 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Mail;
-use MrLikviduk\Registration\Mail\CheckNewUsersMailMail;
+use MrLikviduk\Registration\Mail\CheckNewUsersMail;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,17 +16,22 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
+    protected $cron = '0 * * * *';
+
     protected function schedule(Schedule $schedule)
     {
         parent::schedule($schedule);
 
-        $periodicity = 90; // Периодичность проверки (в минутах)
-
         $schedule->call(function () {
-            $periodicity = 90; // Периодичность проверки (в минутах)
-            $users_count = User::where('created_at', '>=', Carbon::now()->subMinutes($periodicity))->count();
-            Mail::queue(new CheckNewUsersMailMail($users_count, $periodicity));
-        })->cron('*/'.$periodicity.' * * * *');
+            $users_count = [
+                'hour' => User::where('created_at', '>=', Carbon::now()->subHour())->count(),
+                'day' => User::where('created_at', '>=', Carbon::now()->subDay())->count(),
+                'week' => User::where('created_at', '>=', Carbon::now()->subWeek())->count(),
+                'month' => User::where('created_at', '>=', Carbon::now()->subDays(30))->count()
+            ];
+            Mail::queue(new CheckNewUsersMail($users_count));
+        })->cron($this->cron);
 
     }
 }

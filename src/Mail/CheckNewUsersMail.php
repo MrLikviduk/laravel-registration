@@ -8,23 +8,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CheckNewUsersMailMail extends Mailable
+class CheckNewUsersMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $users_count;
-
-    protected $periodicity;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($users_count, $periodicity)
+    public function __construct($users_count)
     {
         $this->users_count = $users_count;
-        $this->periodicity = $periodicity;
     }
 
     /**
@@ -34,10 +31,7 @@ class CheckNewUsersMailMail extends Mailable
      */
     public function build()
     {
-        return $this->view('registration::check-new-users-mail', [
-            'users_count' => $this->users_count,
-            'periodicity' => $this->periodicity
-        ])->
+        return $this->view('registration::check-new-users-mail', $this->users_count)->
         to(Config::get('mail.from.address'), Config::get('mail.from.name'));
     }
 }
